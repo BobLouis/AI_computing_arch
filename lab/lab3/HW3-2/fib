@@ -1,0 +1,40 @@
+#main:
+
+    #mv t2, a0 
+    #jal fibonacci
+    #mv a0, t2
+    #ret
+    # a0 = n  input
+    # caller saved
+    #addi   sp, sp, -4
+    #sw     ra, 0(sp)       # caller saved
+    #mv     t2, a0          # pass parameter
+    #jal    fibonacci       # jump to fibo
+    #mv     a0, t2
+    #lw     ra, 0(sp)       # retrieve
+    #addi   sp, sp, 4
+    #ret
+
+
+fibonacci:
+    ## fibonacci function
+    li t1, 1
+    ble t2, t1, is_one # examine if t2 is onc
+    # n > 1
+    addi   sp, sp, -8 		  #make room for ra and t2 
+    sw     ra, 0(sp)          # store return address
+    sw     t2, 4(sp)          # store temp data
+    addi   t2, t2, -1	      # Now n-1 in t2
+    jal fibonacci		      # Calculate fibo(n-1)
+    lw t0, 4(sp)              # get original n from stack
+    sw t2, 4(sp)              # store fibo(n-1) to stack in same place
+    addi t2, t0, -2		      # Now n-2 in t2 
+    jal fibonacci	          # Calculate fibo(n-2)  VVV t2 = fibo(n-2) 
+    lw t0, 4(sp)              # Get result of fibo(n-1) from stack  VVV t0 = fibo(n-1)
+    add t2, t2, t0		      # add fibo(n-1) and fibo(n-2)
+    lw ra, 0(sp)		      # Get return address from stack
+    addi sp, sp, 8
+is_zero:
+    ret
+is_one:
+ ret

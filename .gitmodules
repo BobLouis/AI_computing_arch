@@ -1,0 +1,3 @@
+[submodule "docker"]
+	path = docker
+	url = https://playlab.computing.ncku.edu.tw:4001/CTPS/playlab-docker-base.git
